@@ -8,7 +8,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 import { CircularProgress, Box } from "@mui/material";
 const ProductList = lazy(() =>
-  import("./pages/ProductList/components/ProductList")
+  import("./pages/Home/components/ProductList")
 );
 const ProductDetails = lazy(() =>
   import("./pages/ProductDetails/components/ProductDetails")
