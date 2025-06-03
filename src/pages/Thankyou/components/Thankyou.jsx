@@ -94,9 +94,6 @@ const Thankyou = () => {
                 <Typography>Quantity: {item?.quantity || "N/A"}</Typography>
                 <Typography>Variant: {item?.variant || "N/A"}</Typography>
                 <Typography>Color: {item?.color || "N/A"}</Typography>
-                <Typography>
-                  Sizes: {item?.inventoryDetails?.sizes?.join(", ") || "N/A"}
-                </Typography>
                 <Divider sx={{ my: 1 }} />
               </Box>
             ))
