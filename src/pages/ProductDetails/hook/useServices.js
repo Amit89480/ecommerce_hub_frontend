@@ -63,6 +63,8 @@ const useServices = () => {
         navigate("/login");
       }
     } catch (error) {
+      toast.error("Please login to access cart");
+      navigate("/login");
       console.log(error);
     }
   };

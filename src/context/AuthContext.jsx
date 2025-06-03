@@ -27,7 +27,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     fetchUser();
   }, []);
-
   return (
     <AuthContext.Provider
       value={{ user, accountLogin, logout, loading, fetchUser, signup }}
