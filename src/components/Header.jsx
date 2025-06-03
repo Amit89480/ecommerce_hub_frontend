@@ -52,7 +52,12 @@ export default function Header() {
             <Typography>{user?.name}</Typography>
           </>
         ) : (
-          <Typography onClick={() => navigate("/login")}>Login</Typography>
+          <Typography
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </Typography>
         )}
       </Toolbar>
     </AppBar>

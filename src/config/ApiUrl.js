@@ -1,5 +1,5 @@
 class apiurl {
-  static baseUrl = window.location.origin || "http://localhost:4000";
+  static baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:4000";
 
   static accountLogin = this.baseUrl + "/user/login";
   static profileDetails = this.baseUrl + "/user/profile/details";

@@ -1,45 +1,41 @@
 import React, { useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import useCommon from "../../../hooks/useCommon";
 import { toast } from "react-toastify";
 const useServices = () => {
-  const { accountLogin } = useCommon();
-  const [loginData, setLoginData] = useState({
+  const { signup } = useCommon();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    mobile: "",
     email: "",
+    fragmentedAddress: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const { login } = useAuth();
 
-  const navigate = useNavigate();
-
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    if (!validateEmail(loginData.email)) {
-      setError("Please enter a valid email address");
-      return;
+    try {
+      e.preventDefault();
+      let signUpResponse = await signup(formData);
+      if (signUpResponse?.data?.responseCode === 200) {
+        toast.success("User successfully created");
+        navigate("/login");
+      } else if (signUpResponse?.data?.responseCode === 401) {
+        toast.error("User already exists");
+      }
+    } catch (error) {
+      toast.error("something went wrong");
+      console.log(error);
     }
-    if (!loginData.password.trim()) {
-      setError("Password is required");
-      return;
-    }
-    const loginReponse = await accountLogin(loginData);
-    if (loginReponse) {
-      toast.success("Successfully logged in");
-    }
-    // login(loginData);
-    navigate("/checkout");
   };
   return {
     handleSubmit,
-    setLoginData,
-    loginData,
-    error,
+    handleChange,
+    formData,
   };
 };
 

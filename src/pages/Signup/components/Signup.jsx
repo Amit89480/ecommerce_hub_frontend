@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import useCommon from "../../../hooks/useCommon";
+import React from "react";
 import {
   Container,
   Paper,
@@ -8,35 +7,10 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import useServices from "../hook/useServices";
 
 export default function SignUp() {
-  const { signup } = useCommon();
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    mobile: "",
-    email: "",
-    fragmentedAddress: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      let signUpResponse = await signup(formData);
-      if (signUpResponse?.data?.responseCode === 200) {
-        alert("User successfully created");
-        navigate("/login");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { handleSubmit, handleChange ,formData} = useServices();
 
   return (
     <Container

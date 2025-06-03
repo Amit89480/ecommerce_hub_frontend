@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const useServices = () => {
   const [loginData, setLoginData] = useState({
     email: "",
@@ -14,7 +15,7 @@ const useServices = () => {
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   useEffect(() => {
     if (user) {
-      navigate("/"); 
+      navigate("/");
     }
   }, [user, navigate]);
   const handleSubmit = async (e) => {
@@ -30,9 +31,14 @@ const useServices = () => {
       return;
     }
     const loginReponse = await accountLogin(loginData);
-    if (loginReponse) {
+    if (loginReponse?.data?.responseCode === 200) {
+      toast.success("Successfully logged in");
       await fetchUser();
       navigate("/checkout");
+    } else if (loginReponse?.data?.responseCode === 104) {
+      toast.error("Invalid credentails");
+    } else if (loginReponse?.data?.responseCode === 123) {
+      toast.error("User not found");
     }
   };
   const handleSignUp = () => {
