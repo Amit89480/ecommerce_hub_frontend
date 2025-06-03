@@ -12,6 +12,7 @@ import {
   Divider,
   FormHelperText,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const order = {
   productName: "Chicken Meat",
@@ -21,6 +22,7 @@ const order = {
 };
 
 export default function Checkout() {
+  const navigate =useNavigate()
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -46,6 +48,7 @@ export default function Checkout() {
   const handlePlaceOrder = () => {
     // if (validateForm()) {
       alert("Order placed successfully!");
+      navigate("/thankyou")
       // Add your submission logic here
     // } else {
     //   window.scrollTo({ top: 0, behavior: "smooth" });

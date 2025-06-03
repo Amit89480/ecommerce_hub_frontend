@@ -5,8 +5,12 @@ import Header from "./components/Header";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 import { CircularProgress, Box } from "@mui/material";
-const ProductList = lazy(() => import("./pages/ProductList/components/ProductList"));
-const ProductDetails = lazy(() => import("./pages/ProductDetails/components/ProductDetails"));
+const ProductList = lazy(() =>
+  import("./pages/ProductList/components/ProductList")
+);
+const ProductDetails = lazy(() =>
+  import("./pages/ProductDetails/components/ProductDetails")
+);
 const Checkout = lazy(() => import("./pages/Checkout/components/Checkout"));
 const ThankYou = lazy(() => import("./pages/Thankyou/components/Thankyou"));
 const Login = lazy(() => import("./pages/Login/components/Login"));
@@ -20,7 +24,12 @@ function App() {
         <Header />
         <Suspense
           fallback={
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              minHeight="60vh"
+            >
               <CircularProgress size={50} />
             </Box>
           }
