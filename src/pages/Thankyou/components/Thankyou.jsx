@@ -1,4 +1,12 @@
-import { Box, Typography, Button, Container, Divider, Paper, Grid } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Container,
+  Divider,
+  Paper,
+  Grid,
+} from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useNavigate } from "react-router-dom";
 import useServices from "../hook/useServices";
@@ -17,7 +25,10 @@ const Thankyou = () => {
     <Container maxWidth="md" sx={{ py: 5 }}>
       <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
         <Box textAlign="center" mb={4}>
-          <CheckCircleOutlineIcon color="success" sx={{ fontSize: 80, mb: 2 }} />
+          <CheckCircleOutlineIcon
+            color="success"
+            sx={{ fontSize: 80, mb: 2 }}
+          />
           <Typography variant="h4" fontWeight="bold" gutterBottom>
             Thank You!
           </Typography>
@@ -37,15 +48,29 @@ const Thankyou = () => {
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <Typography><strong>Name:</strong> {orderDetails?.fullName || "N/A"}</Typography>
-              <Typography><strong>Email:</strong> {orderDetails?.email || "N/A"}</Typography>
-              <Typography><strong>Phone:</strong> {orderDetails?.phoneNumber || "N/A"}</Typography>
+              <Typography>
+                <strong>Name:</strong> {orderDetails?.fullName || "N/A"}
+              </Typography>
+              <Typography>
+                <strong>Email:</strong> {orderDetails?.email || "N/A"}
+              </Typography>
+              <Typography>
+                <strong>Phone:</strong> {orderDetails?.phoneNumber || "N/A"}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Typography><strong>Address:</strong> {orderDetails?.address || "N/A"}</Typography>
-              <Typography><strong>City:</strong> {orderDetails?.city || "N/A"}</Typography>
-              <Typography><strong>State:</strong> {orderDetails?.state || "N/A"}</Typography>
-              <Typography><strong>Zip Code:</strong> {orderDetails?.zipCode || "N/A"}</Typography>
+              <Typography>
+                <strong>Address:</strong> {orderDetails?.address || "N/A"}
+              </Typography>
+              <Typography>
+                <strong>City:</strong> {orderDetails?.city || "N/A"}
+              </Typography>
+              <Typography>
+                <strong>State:</strong> {orderDetails?.state || "N/A"}
+              </Typography>
+              <Typography>
+                <strong>Zip Code:</strong> {orderDetails?.zipCode || "N/A"}
+              </Typography>
             </Grid>
           </Grid>
         </Box>
@@ -63,11 +88,12 @@ const Thankyou = () => {
                 <Typography>
                   <strong>Item {index + 1}:</strong>
                 </Typography>
-                <Typography>Inventory ID: {item?.inventory || "N/A"}</Typography>
-                <Typography>Quantity: {item?.quantity || "N/A"}</Typography>
                 <Typography>
-                  Colors: {item?.inventoryDetails?.colors?.join(", ") || "N/A"}
+                  Inventory ID: {item?.inventory || "N/A"}
                 </Typography>
+                <Typography>Quantity: {item?.quantity || "N/A"}</Typography>
+                <Typography>Variant: {item?.variant || "N/A"}</Typography>
+                <Typography>Color: {item?.color || "N/A"}</Typography>
                 <Typography>
                   Sizes: {item?.inventoryDetails?.sizes?.join(", ") || "N/A"}
                 </Typography>
@@ -87,7 +113,8 @@ const Thankyou = () => {
 
         <Box textAlign="center">
           <Typography variant="h6" color="success.main">
-            We’ll notify you when your order ships. Thank you for shopping with us!
+            We’ll notify you when your order ships. Thank you for shopping with
+            us!
           </Typography>
           <Button
             variant="contained"
