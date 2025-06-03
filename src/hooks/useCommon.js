@@ -1,10 +1,56 @@
-import React from "react";
 import apiurl from "../config/ApiUrl";
 import { useAPIRequest } from "../utils/APIRequest";
 
 const useCommon = () => {
   const { makeRequest } = useAPIRequest();
 
+  const accountLogin = async (email, password) => {
+    try {
+      let url = apiurl.accountLogin;
+      let payload = {
+        email,
+        password,
+      };
+      let response = await makeRequest("post", url, payload);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signup = async (userObj) => {
+    try {
+      let url = apiurl.signup;
+      let payload = {
+        ...userObj,
+      };
+      let response = await makeRequest("post", url, payload);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      let url = apiurl.logout;
+      let payload = {};
+      let response = await makeRequest("get", url, payload);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const profileDetails = async () => {
+    try {
+      let url = apiurl.profileDetails;
+      let payload = {};
+      let response = await makeRequest("get", url, payload);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getAllProducts = async (page, pageSize) => {
     try {
       let url = apiurl.productList;
@@ -41,10 +87,27 @@ const useCommon = () => {
       console.log(error);
     }
   };
+
+  const deleteItemFromCart = async (recordId) => {
+    try {
+      let url = apiurl.deleteCartItem;
+      let response = makeRequest("post", url, {
+        recordId,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
     getAllProducts,
     getProductDetais,
     getCartItems,
+    deleteItemFromCart,
+    profileDetails,
+    accountLogin,
+    logout,
+    signup,
   };
 };
 

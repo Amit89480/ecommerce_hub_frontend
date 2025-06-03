@@ -2,6 +2,7 @@ class apiurl {
   static baseUrl = "http://localhost:4000";
 
   static accountLogin = this.baseUrl + "/user/login";
+  static profileDetails = this.baseUrl + "/user/profile/details";
   static signup = this.baseUrl + "/user/signup";
   static logout = this.baseUrl + "/user/logout";
   static productList = this.baseUrl + "/user/list/products";
