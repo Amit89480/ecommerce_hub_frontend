@@ -58,6 +58,9 @@ const useServices = () => {
         await fetchUser();
         toast.success("Item added to cart");
         navigate("/checkout");
+      } else {
+        toast.error("Please login to access cart");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);

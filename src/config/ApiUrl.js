@@ -1,5 +1,6 @@
 class apiurl {
-  static baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:4000";
+  // static baseUrl = "http://localhost:4000";
+  static baseUrl = "https://ecommerce-hub-4wzs.onrender.com"
 
   static accountLogin = this.baseUrl + "/user/login";
   static profileDetails = this.baseUrl + "/user/profile/details";
