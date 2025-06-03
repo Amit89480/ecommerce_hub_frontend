@@ -1,5 +1,7 @@
 import "./App.css";
 import React, { Suspense, lazy } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import { AuthProvider } from "./context/AuthContext";
@@ -20,6 +22,7 @@ const NotFound = lazy(() => import("./components/404"));
 function App() {
   return (
     <AuthProvider>
+      <ToastContainer position="top-left" autoClose={3000} />
       <Router>
         <Header />
         <Suspense

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useCommon from "../../../hooks/useCommon";
 import {
   Container,
   Paper,
@@ -7,13 +8,16 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const { signup } = useCommon();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     email: "",
-    address: "",
+    fragmentedAddress: "",
     password: "",
   });
 
@@ -21,10 +25,17 @@ export default function SignUp() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Sign Up Data:", formData);
-    // Submit logic here
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      let signUpResponse = await signup(formData);
+      if (signUpResponse?.data?.responseCode === 200) {
+        alert("User successfully created");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -89,13 +100,13 @@ export default function SignUp() {
 
           <TextField
             label="Address"
-            name="address"
+            name="fragmentedAddress"
             variant="outlined"
             fullWidth
             multiline
             rows={3}
             required
-            value={formData.address}
+            value={formData.fragmentedAddress}
             onChange={handleChange}
             sx={{ mb: 3 }}
           />

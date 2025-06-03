@@ -8,17 +8,22 @@ import {
   Badge,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function Header({ onCartClick, onLoginClick, cartCount = 0 }) {
+export default function Header() {
+  const { user, fetchUser } = useAuth();
   const navigate = useNavigate();
-  const handleNavigate = () => {
+
+  const handleNavigate = async () => {
+    await fetchUser();
     navigate("/");
   };
+
   const navigateToCheckout = () => {
     navigate("/checkout");
   };
+
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
@@ -32,23 +37,23 @@ export default function Header({ onCartClick, onLoginClick, cartCount = 0 }) {
           MyShop
         </Typography>
 
-        <IconButton
-          color="inherit"
-          onClick={navigateToCheckout}
-          style={{ cursor: "pointer" }}
-        >
-          <Badge badgeContent={cartCount} color="error">
-            <ShoppingCartIcon />
-          </Badge>
-        </IconButton>
+        {user ? (
+          <>
+            <IconButton
+              color="inherit"
+              onClick={navigateToCheckout}
+              style={{ cursor: "pointer" }}
+            >
+              <Badge badgeContent={user?.cartCount || 0} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
 
-        <IconButton
-          color="inherit"
-          onClick={onLoginClick}
-          style={{ cursor: "pointer" }}
-        >
-          <AccountCircleIcon />
-        </IconButton>
+            <Typography>{user?.name}</Typography>
+          </>
+        ) : (
+          <Typography onClick={() => navigate("/login")}>Login</Typography>
+        )}
       </Toolbar>
     </AppBar>
   );

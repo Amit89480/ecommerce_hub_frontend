@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useCommon from "../../../hooks/useCommon";
+import { useAuth } from "../../../context/AuthContext";
+import { toast } from "react-toastify";
 
 const useServices = () => {
   const [productDetails, setProductDetails] = useState({});
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
-
+  const { fetchUser } = useAuth();
   const { getProductDetais, addToCart } = useCommon();
   const { id: productId } = useParams();
   const navigate = useNavigate();
 
   const fetchProductDetails = async () => {
     try {
-      console.log("i amdhduhudhudhuhduhud");
       let response = await getProductDetais(productId);
       if (response?.data?.result) {
         const details = response?.data?.result;
@@ -54,7 +55,8 @@ const useServices = () => {
     try {
       let addToCartResponse = await addToCart(cartItem);
       if (addToCartResponse?.data?.responseCode === 200) {
-        alert("Item added to cart successfully");
+        await fetchUser();
+        toast.success("Item added to cart");
         navigate("/checkout");
       }
     } catch (error) {

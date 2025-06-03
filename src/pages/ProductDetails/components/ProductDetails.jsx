@@ -31,7 +31,6 @@ export default function LandingPage() {
 
   return (
     <Grid container spacing={4} padding={4}>
-      {/* Left - Product Images */}
       <Grid item xs={12} md={6}>
         <Card>
           <CardMedia
@@ -58,7 +57,6 @@ export default function LandingPage() {
         </Box>
       </Grid>
 
-      {/* Right - Product Details */}
       <Grid item xs={12} md={6} container direction="column" spacing={3}>
         <Grid item>
           <Typography variant="h4" fontWeight="bold">
@@ -71,7 +69,7 @@ export default function LandingPage() {
 
         <Grid item>
           <Typography variant="h5" color="primary" fontWeight="bold">
-            ${productDetails?.price?.toFixed(2)}
+            ₹ {productDetails?.price?.toFixed(2)}
           </Typography>
         </Grid>
 
@@ -97,7 +95,7 @@ export default function LandingPage() {
 
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel id="size-select-label">Size</InputLabel>
+              <InputLabel id="size-select-label">Variant</InputLabel>
               <Select
                 labelId="size-select-label"
                 value={selectedSize}
@@ -142,7 +140,6 @@ export default function LandingPage() {
           </Typography>
         </Grid>
 
-        {/* Buy Now Button */}
         <Grid item xs={12}>
           <Button
             variant="contained"
@@ -154,6 +151,8 @@ export default function LandingPage() {
                   {
                     inventoryId: productDetails._id,
                     quantity: quantity,
+                    variant: selectedSize,
+                    color: selectedColor,
                   },
                 ],
               })

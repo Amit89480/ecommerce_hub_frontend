@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import useCommon from "../../../hooks/useCommon";
+import { toast } from "react-toastify";
 const useServices = () => {
   const { accountLogin } = useCommon();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
-  console.log(loginData)
   const [error, setError] = useState("");
   const { login } = useAuth();
 
@@ -30,7 +30,7 @@ const useServices = () => {
     }
     const loginReponse = await accountLogin(loginData);
     if (loginReponse) {
-      alert("I am logged in");
+      toast.success("Successfully logged in");
     }
     // login(loginData);
     navigate("/checkout");

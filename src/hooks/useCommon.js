@@ -134,7 +134,7 @@ const useCommon = () => {
   };
   const fetchOrderDetails = async (recordId) => {
     try {
-      let url = apiurl.createOrder;
+      let url = apiurl.fetchOrderDetails;
       let response = makeRequest("post", url, {
         recordId,
       });

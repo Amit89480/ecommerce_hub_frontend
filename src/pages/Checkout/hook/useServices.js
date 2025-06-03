@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import useCommon from "../../../hooks/useCommon";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
+import { toast } from "react-toastify";
+import { validateCheckoutForm } from "../../../utils/Validation";
 
 const useServices = () => {
   const { getCartItems, createOrder, clearCart } = useCommon();
+  const { fetchUser } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
@@ -43,8 +48,9 @@ const useServices = () => {
   const removeCartItems = async (recordId) => {
     try {
       let createOrderResponse = await clearCart();
-      if (createOrderResponse?.data?.result) {
-        navigate(`/thankyou/orderId=${recordId}`);
+      if (createOrderResponse?.data?.responseCode === 200) {
+        await fetchUser();
+        navigate(`/thankyou/${recordId}`);
       }
     } catch (err) {
       console.log(err);
@@ -53,6 +59,12 @@ const useServices = () => {
 
   const handlePlaceOrder = async () => {
     try {
+      const validationErrors = validateCheckoutForm(form);
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+      }
+      setLoading(true);
       let payload = {
         cartId: cartItems?.result?.[0]?._id,
         paymentMethod: "card",
@@ -61,11 +73,18 @@ const useServices = () => {
       };
       let createOrderResponse = await createOrder(payload);
       if (createOrderResponse?.data?.result) {
-        alert("Order placed successfully!");
-        await removeCartItems(createOrderResponse?._id);
+        setLoading(false);
+        toast.success("Order succcessfully placed");
+        await removeCartItems(createOrderResponse?.data?.result?.orderId);
+      } else {
+        toast.error(
+          createOrderResponse?.data?.message || "Something went wrong!"
+        );
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,6 +96,7 @@ const useServices = () => {
     setErrors,
     form,
     setForm,
+    loading,
   };
 };
 
