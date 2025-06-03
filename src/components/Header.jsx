@@ -9,25 +9,44 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ onCartClick, onLoginClick, cartCount = 0 }) {
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("/");
+  };
+  const navigateToCheckout = () => {
+    navigate("/checkout");
+  };
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
-        {/* Logo or Title */}
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1 }}
+          style={{ cursor: "pointer" }}
+          onClick={handleNavigate}
+        >
           MyShop
         </Typography>
 
-        {/* Cart Icon */}
-        <IconButton color="inherit" onClick={onCartClick}>
+        <IconButton
+          color="inherit"
+          onClick={navigateToCheckout}
+          style={{ cursor: "pointer" }}
+        >
           <Badge badgeContent={cartCount} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
 
-        {/* Login Icon */}
-        <IconButton color="inherit" onClick={onLoginClick}>
+        <IconButton
+          color="inherit"
+          onClick={onLoginClick}
+          style={{ cursor: "pointer" }}
+        >
           <AccountCircleIcon />
         </IconButton>
       </Toolbar>

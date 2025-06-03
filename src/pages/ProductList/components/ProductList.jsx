@@ -1,13 +1,14 @@
-import { Grid } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import Card from "../../../components/Card";
 import useServices from "../hook/useServices";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
   const { productList } = useServices();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleBuy = () => {
-    console.log("I am route")
+    navigate("/product/details");
   };
   return (
     <Grid container spacing={4} padding={4}>

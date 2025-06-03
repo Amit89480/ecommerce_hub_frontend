@@ -4,12 +4,12 @@ import { useAPIRequest } from "../utils/APIRequest";
 const useCommon = () => {
   const { makeRequest } = useAPIRequest();
 
-  const accountLogin = async (email, password) => {
+  const accountLogin = async (obj) => {
     try {
       let url = apiurl.accountLogin;
       let payload = {
-        email,
-        password,
+        email: obj?.email,
+        password: obj?.password,
       };
       let response = await makeRequest("post", url, payload);
       return response;
