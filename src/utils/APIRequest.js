@@ -14,6 +14,7 @@ export const useAPIRequest = () => {
         method,
         url,
         ...(method === "get" ? { params: payload } : { data: payload }),
+         withCredentials: true, 
         ...config,
       });
       setResponse(res.data);
