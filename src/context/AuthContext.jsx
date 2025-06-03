@@ -4,14 +4,18 @@ import useCommon from "../hooks/useCommon";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const { accountLogin, logout, profileDetails,signup } = useCommon();
+  const { accountLogin, logout, profileDetails, signup } = useCommon();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
     try {
       const apiResponse = await profileDetails();
-      setUser(apiResponse?.data?.result); 
+      if (apiResponse?.data?.responseCode === 200) {
+        setUser(apiResponse?.data?.result);
+      } else {
+        setUser(null);
+      }
     } catch (error) {
       console.error("Fetch user error:", error);
       setUser(null);
@@ -26,7 +30,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, accountLogin, logout, loading, fetchUser,signup }}
+      value={{ user, accountLogin, logout, loading, fetchUser, signup }}
     >
       {children}
     </AuthContext.Provider>
