@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   Typography,
@@ -13,53 +13,21 @@ import {
   CardMedia,
   CardContent,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-
-const product = {
-  _id: "683ddc74e9af0c102b949583",
-  externalId: 19,
-  category: "groceries",
-  colors: ["Yellow", "Gray"],
-  description:
-    "Fresh and tender chicken meat, suitable for various culinary preparations.",
-  images: [
-    "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/1.webp",
-    "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/2.webp",
-  ],
-  price: 9.99,
-  rating: 3.19,
-  sizes: ["XL", "XXL"],
-  stock: 97,
-  thumbnail:
-    "https://cdn.dummyjson.com/product-images/groceries/chicken-meat/thumbnail.webp",
-  title: "Chicken Meat",
-  status: "active",
-};
+import useServices from "../hook/useServices";
+import { IconButton } from "@mui/material";
+import { Add, Remove } from "@mui/icons-material";
 
 export default function LandingPage() {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [quantity, setQuantity] = useState(1);
-  const navigate =useNavigate()
-
-  const handleColorChange = (event) => {
-    setSelectedColor(event.target.value);
-  };
-
-  const handleSizeChange = (event) => {
-    setSelectedSize(event.target.value);
-  };
-
-  const handleQuantityChange = (event) => {
-    const value = Number(event.target.value);
-    if (value >= 1 && value <= product.stock) {
-      setQuantity(value);
-    }
-  };
-
-  const handleBuyNow = () => {
-   navigate("/checkout")
-  };
+  const {
+    productDetails,
+    selectedColor,
+    selectedSize,
+    quantity,
+    handleColorChange,
+    handleSizeChange,
+    handleQuantityChange,
+    buyNow,
+  } = useServices();
 
   return (
     <Grid container spacing={4} padding={4}>
@@ -69,23 +37,24 @@ export default function LandingPage() {
           <CardMedia
             component="img"
             height="400"
-            image={product.images[0]}
-            alt={product.title}
+            image={productDetails?.images?.[0]}
+            alt={productDetails?.title}
             sx={{ objectFit: "contain" }}
           />
         </Card>
         <Box display="flex" gap={2} mt={2}>
-          {product.images.map((img, idx) => (
-            <Card key={idx} sx={{ width: 80, cursor: "pointer" }}>
-              <CardMedia
-                component="img"
-                height="80"
-                image={img}
-                alt={`${product.title} ${idx}`}
-                sx={{ objectFit: "contain" }}
-              />
-            </Card>
-          ))}
+          {productDetails &&
+            productDetails?.images?.map((img, idx) => (
+              <Card key={idx} sx={{ width: 80, cursor: "pointer" }}>
+                <CardMedia
+                  component="img"
+                  height="80"
+                  image={img}
+                  alt={`${productDetails?.title} ${idx}`}
+                  sx={{ objectFit: "contain" }}
+                />
+              </Card>
+            ))}
         </Box>
       </Grid>
 
@@ -93,20 +62,19 @@ export default function LandingPage() {
       <Grid item xs={12} md={6} container direction="column" spacing={3}>
         <Grid item>
           <Typography variant="h4" fontWeight="bold">
-            {product.title}
+            {productDetails.title}
           </Typography>
           <Typography variant="body1" color="text.secondary" mt={1}>
-            {product.description}
+            {productDetails.description}
           </Typography>
         </Grid>
 
         <Grid item>
           <Typography variant="h5" color="primary" fontWeight="bold">
-            ${product.price.toFixed(2)}
+            ${productDetails?.price?.toFixed(2)}
           </Typography>
         </Grid>
 
-        {/* Variant Selectors */}
         <Grid item container spacing={2} alignItems="center">
           <Grid item xs={6}>
             <FormControl fullWidth>
@@ -117,11 +85,12 @@ export default function LandingPage() {
                 label="Color"
                 onChange={handleColorChange}
               >
-                {product.colors.map((color) => (
-                  <MenuItem key={color} value={color}>
-                    {color}
-                  </MenuItem>
-                ))}
+                {productDetails &&
+                  productDetails?.colors?.map((color) => (
+                    <MenuItem key={color} value={color}>
+                      {color}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
@@ -135,7 +104,7 @@ export default function LandingPage() {
                 label="Size"
                 onChange={handleSizeChange}
               >
-                {product.sizes.map((size) => (
+                {productDetails?.sizes?.map((size) => (
                   <MenuItem key={size} value={size}>
                     {size}
                   </MenuItem>
@@ -145,18 +114,31 @@ export default function LandingPage() {
           </Grid>
         </Grid>
 
-        {/* Quantity Selector */}
         <Grid item xs={6}>
-          <TextField
-            label="Quantity"
-            type="number"
-            inputProps={{ min: 1, max: product.stock }}
-            value={quantity}
-            onChange={handleQuantityChange}
-            fullWidth
-          />
-          <Typography variant="caption" color="text.secondary">
-            Stock available: {product.stock}
+          <Box display="flex" alignItems="center">
+            <Typography variant="subtitle1" mr={2}>
+              Quantity:
+            </Typography>
+            <IconButton
+              onClick={() =>
+                handleQuantityChange({ target: { value: quantity - 1 } })
+              }
+              disabled={quantity <= 1}
+            >
+              <Remove />
+            </IconButton>
+            <Typography>{quantity}</Typography>
+            <IconButton
+              onClick={() =>
+                handleQuantityChange({ target: { value: quantity + 1 } })
+              }
+              disabled={quantity >= productDetails?.stock}
+            >
+              <Add />
+            </IconButton>
+          </Box>
+          <Typography variant="caption" color="text.secondary" mt={1}>
+            Stock available: {productDetails?.stock}
           </Typography>
         </Grid>
 
@@ -166,8 +148,17 @@ export default function LandingPage() {
             variant="contained"
             size="large"
             color="primary"
-            onClick={handleBuyNow}
-            disabled={product.stock === 0}
+            onClick={() =>
+              buyNow({
+                inventories: [
+                  {
+                    inventoryId: productDetails._id,
+                    quantity: quantity,
+                  },
+                ],
+              })
+            }
+            disabled={productDetails?.stock === 0}
           >
             Buy Now
           </Button>

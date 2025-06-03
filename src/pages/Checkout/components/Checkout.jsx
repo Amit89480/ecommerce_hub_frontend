@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Grid,
@@ -10,92 +9,102 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  FormHelperText,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-
-const order = {
-  productName: "Chicken Meat",
-  variant: { color: "Yellow", size: "XL" },
-  quantity: 2,
-  price: 9.99,
-};
+import useServices from "../hook/useServices";
 
 export default function Checkout() {
-  const navigate =useNavigate()
-  const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-  });
-
-  const [errors, setErrors] = useState({});
-  const handleChange = (field) => (e) => {
-    setForm({ ...form, [field]: e.target.value });
-  };
-
-  // const errors = validateCheckoutForm(form);
-  // setErrors(errors);
-  // return Object.keys(errors).length === 0;
-
-  const handlePlaceOrder = () => {
-    // if (validateForm()) {
-      alert("Order placed successfully!");
-      navigate("/thankyou")
-      // Add your submission logic here
-    // } else {
-    //   window.scrollTo({ top: 0, behavior: "smooth" });
-    // }
-  };
-
-  const subtotal = order.price * order.quantity;
+  const { cartItems, handlePlaceOrder, errors, handleChange, form } =
+    useServices();
 
   return (
-    <Box sx={{ maxWidth: 900, mx: "auto", mt: 5, p: 3 }}>
-      <Typography variant="h4" mb={3} fontWeight="bold">
+    <Box sx={{ maxWidth: 1200, mx: "auto", mt: 5, p: 3 }}>
+      <Typography variant="h4" mb={4} fontWeight="bold">
         Checkout
       </Typography>
 
-      <Grid container spacing={4}>
-        {/* Order Summary */}
-        <Grid item xs={12} md={6}>
+      <Grid
+        container
+        spacing={6}
+        sx={{
+          flexWrap: { xs: "wrap", md: "nowrap" },
+          minHeight: 600,
+        }}
+      >
+        <Grid
+          item
+          xs={12}
+          md={6}
+          sx={{
+            minWidth: { md: "50%" },
+            maxHeight: 700,
+            overflowY: "auto",
+          }}
+        >
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" mb={2}>
               Order Summary
             </Typography>
             <List>
-              <ListItem divider>
-                <ListItemText
-                  primary={order.productName}
-                  secondary={`Color: ${order.variant.color}, Size: ${order.variant.size}`}
-                />
-                <Typography>
-                  Qty: {order.quantity} x ${order.price.toFixed(2)}
-                </Typography>
-                <Typography sx={{ ml: 2 }} fontWeight="bold">
-                  ${subtotal.toFixed(2)}
-                </Typography>
-              </ListItem>
+              {cartItems?.result?.length === 0 && (
+                <Typography>No items in cart.</Typography>
+              )}
+              {cartItems?.result?.map((cart) =>
+                cart.inventories.map(({ inventoryId, quantity }) => (
+                  <ListItem key={inventoryId._id} divider>
+                    <Box
+                      component="img"
+                      src={inventoryId.thumbnail}
+                      alt={inventoryId.title}
+                      sx={{
+                        width: 64,
+                        height: 64,
+                        objectFit: "contain",
+                        borderRadius: 1,
+                        mr: 2,
+                      }}
+                    />
+                    <ListItemText
+                      primary={inventoryId.title}
+                      secondary={`Colors: ${inventoryId.colors.join(
+                        ", "
+                      )} | Sizes: ${inventoryId.sizes.join(", ")}`}
+                    />
+                    <Typography>
+                      Qty: {quantity} x ₹
+                      {inventoryId.price?.toFixed(2) || "9.99"}
+                    </Typography>
+                    <Typography sx={{ ml: 2, fontWeight: "bold" }}>
+                      ₹
+                      {(
+                        (inventoryId.price ? inventoryId.price : 9.99) *
+                        quantity
+                      ).toFixed(2)}
+                    </Typography>
+                  </ListItem>
+                ))
+              )}
               <Divider />
               <ListItem>
                 <ListItemText primary="Total" />
                 <Typography fontWeight="bold">
-                  ${subtotal.toFixed(2)}
+                  ₹{cartItems?.totalAmount || 0}
                 </Typography>
               </ListItem>
             </List>
           </Paper>
         </Grid>
 
-        {/* Form */}
-        <Grid item xs={12} md={6}>
+        {/* Right side - Form */}
+        <Grid
+          item
+          xs={12}
+          md={6}
+          sx={{
+            minWidth: { md: "50%" },
+            maxHeight: 700,
+            overflowY: "auto",
+          }}
+        >
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" mb={2}>
               Billing & Payment Information

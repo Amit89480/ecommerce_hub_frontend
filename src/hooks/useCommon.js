@@ -75,6 +75,18 @@ const useCommon = () => {
     }
   };
 
+  const addToCart = async (obj) => {
+    try {
+      let url = apiurl.addCart;
+      let response = makeRequest("post", url, {
+        ...obj,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getCartItems = async (page, pageSize) => {
     try {
       let url = apiurl.fetchAllCart;
@@ -94,6 +106,16 @@ const useCommon = () => {
       let response = makeRequest("post", url, {
         recordId,
       });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const clearCart = async () => {
+    try {
+      let url = apiurl.clearCart;
+      let response = makeRequest("get", url, {});
       return response;
     } catch (error) {
       console.log(error);
@@ -132,6 +154,8 @@ const useCommon = () => {
     signup,
     createOrder,
     fetchOrderDetails,
+    addToCart,
+    clearCart,
   };
 };
 

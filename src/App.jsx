@@ -36,7 +36,7 @@ function App() {
         >
           <Routes>
             <Route path="/" element={<ProductList />} />
-            <Route path="/product/details" element={<ProductDetails />} />
+            <Route path="/product/details/:id" element={<ProductDetails />} />
             <Route
               path="/checkout"
               element={
@@ -46,7 +46,7 @@ function App() {
               }
             />
             <Route
-              path="/thankyou"
+              path="/thankyou/:id"
               element={
                 <ProtectedRoute>
                   <ThankYou />

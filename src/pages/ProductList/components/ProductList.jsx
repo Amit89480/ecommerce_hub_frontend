@@ -7,9 +7,10 @@ export default function LandingPage() {
   const { productList } = useServices();
   const navigate = useNavigate();
 
-  const handleBuy = () => {
-    navigate("/product/details");
+  const handleBuy = (productId) => {
+    navigate(`/product/details/${productId}`);
   };
+
   return (
     <Grid container spacing={4} padding={4}>
       {productList?.map((product, index) => (
@@ -20,10 +21,11 @@ export default function LandingPage() {
             category={product?.category}
             thumbnail={product?.thumbnail}
             price={product?.price}
-            navigate={handleBuy}
+            navigate={() => handleBuy(product._id)} 
           />
         </Grid>
       ))}
     </Grid>
   );
 }
+
