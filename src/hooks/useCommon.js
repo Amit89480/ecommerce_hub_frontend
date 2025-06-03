@@ -99,6 +99,28 @@ const useCommon = () => {
       console.log(error);
     }
   };
+  const createOrder = async (orderObj) => {
+    try {
+      let url = apiurl.createOrder;
+      let response = makeRequest("post", url, {
+        ...orderObj,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchOrderDetails = async (recordId) => {
+    try {
+      let url = apiurl.createOrder;
+      let response = makeRequest("post", url, {
+        recordId,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
     getAllProducts,
     getProductDetais,
@@ -108,6 +130,8 @@ const useCommon = () => {
     accountLogin,
     logout,
     signup,
+    createOrder,
+    fetchOrderDetails,
   };
 };
 
